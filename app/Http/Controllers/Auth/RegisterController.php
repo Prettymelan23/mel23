@@ -16,7 +16,7 @@ class RegisterController extends Controller
     |--------------------------------------------------------------------------
     |
     | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
+    | validation and creation. By default, this controller uses a trait to
     | provide this functionality without requiring any additional code.
     |
     */
@@ -51,8 +51,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['required', 'string', 'in:user,admin'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],  // Ensure 'password_confirmation' is in your form
         ]);
     }
 
@@ -64,11 +63,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // Check if 'role' column exists before saving it, or you can remove this line if the role is not needed
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => $data[;role], //Save role
+            'role' => 'user', // Make sure 'role' column exists in the database or remove it
         ]);
     }
 }

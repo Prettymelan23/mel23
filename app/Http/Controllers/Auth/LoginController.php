@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request; // Add this import for the Request class
 
 class LoginController extends Controller
 {
@@ -37,12 +38,20 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
+
+    /**
+     * Handle the post-login redirection.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     protected function authenticated(Request $request, $user)
-}
+    {
         if ($user->role === 'admin') {
-            return redirect('/admin/dashbaord')
+            return redirect('/admin/dashboard');  // Fixed the typo here
         } else {
             return redirect('user/dashboard');
         }
-     }
- }
+    }
+}
